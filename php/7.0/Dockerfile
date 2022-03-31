@@ -17,3 +17,15 @@ RUN curl -sSLf \
     mysqli \
     pdo_mysql \
     opcache
+RUN set -eux; \
+        { \
+          echo '[global]'; \
+          echo 'daemonize = no'; \
+          echo ''; \
+          echo '[www]'; \
+          echo 'listen = /run/php/php7.0-fpm.sock'; \
+          echo 'listen.owner = www-data'; \
+          echo 'listen.group = www-data'; \
+          echo 'listen.mode = 0660'; \
+          echo 'access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"'; \
+        } > /usr/local/etc/php-fpm.d/zz-docker.conf

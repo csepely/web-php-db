@@ -10,3 +10,15 @@ RUN curl -sSLf \
         https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
     chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions gd mysql mysqli opcache gettext exif pdo_mysql
+RUN set -eux; \
+        { \
+          echo '[global]'; \
+          echo 'daemonize = no'; \
+          echo ''; \
+          echo '[www]'; \
+          echo 'listen = /run/php/php5.6-fpm.sock'; \
+          echo 'listen.owner = www-data'; \
+          echo 'listen.group = www-data'; \
+          echo 'listen.mode = 0660'; \
+          echo 'access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"'; \
+        } > /usr/local/etc/php-fpm.d/zz-docker.conf
